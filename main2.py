@@ -8,7 +8,7 @@ from aiortc import RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, Vi
 from av import VideoFrame
 
 SSL_PORT = 8443
-SERVER_ADDRESS = 'wss://35.77.212.208:' + str(SSL_PORT)
+SERVER_ADDRESS = 'wss://52.194.235.65:' + str(SSL_PORT)
 
 #SSL検証を無効にする
 ssl_context = ssl.create_default_context()
@@ -138,10 +138,13 @@ async def start_peer_connection(sdp_type):
         offer = await pc.createOffer()
         await set_description(offer)
 
-    # @pc.on("datachannel")
-    # def on_datachannel(channel):
-    #     print(f"kaisetu{channel.label}")
-    #     data_channel.send("Hello")
+    @pc.on("datachannel")
+    def on_datachannel(channel):
+        print(f"kaisetu{channel.label}")
+
+        @channel.on("message")
+        def on_message(message):
+            print(message)
 
 async def set_description(description):
     global pc
