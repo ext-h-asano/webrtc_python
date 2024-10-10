@@ -75,12 +75,15 @@ async def got_message_from_server(message):
     signal = json.loads(message)
     print(f'{signal} : testetetertertrtert')
 
-    if signal['type'] == "touch":
-        handle_touch_event(signal)
-    elif signal['type'] == "swipe":
-        handle_swipe_event(signal)
+    if 'type' in signal:
+        if signal['type'] == "touch":
+            handle_touch_event(signal)
+        elif signal['type'] == "swipe":
+            handle_swipe_event(signal)
+        else:
+            print("Unknown type")
     else:
-        print("miti")
+        print("Key 'type' not found in signal")
 
 
 
