@@ -73,7 +73,7 @@ async def start_server_connection():
 
 async def got_message_from_server(message):
     signal = json.loads(message)
-    print(signal)
+    print(f'{signal} : testetetertertrtert')
 
     if signal['type'] == "touch":
         handle_touch_event(signal)
