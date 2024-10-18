@@ -5,7 +5,7 @@ import json
 import subprocess
 
 SSL_PORT = 3001
-SERVER_ADDRESS = 'wss://176.34.2.232:' + str(SSL_PORT)
+SERVER_ADDRESS = 'wss://handling.android-vpn.com:' + str(SSL_PORT)
 
 #SSL検証を無効にする
 ssl_context = ssl.create_default_context()
