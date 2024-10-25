@@ -33,7 +33,7 @@ def execute_wayland_commands(data):
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
         "waydroid session stop",
-        "./launch_waydroid.sh"
+        "./launch-waydroid.sh"
     ]
 
     for command in commands:
