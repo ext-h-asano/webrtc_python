@@ -3,6 +3,7 @@ import websockets
 import ssl
 import json
 import subprocess
+import time
 
 SSL_PORT = 3001
 SERVER_ADDRESS = 'wss://handling.android-vpn.com:' + str(SSL_PORT)
@@ -35,6 +36,7 @@ def execute_wayland_commands():
             result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
             print(f"コマンドの実行success: {command}")
             print(f"出力:{result.stdout}")
+            time.sleep(5)
         except subprocess.CalledProcessError as e:
             print(f"コマンドの実行失敗: {e}")
             return False
