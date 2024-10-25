@@ -24,6 +24,23 @@ def execute_adb_command(command):
     except subprocess.CalledProcessError as e:
         print(f"Error executing ADB command: {e}")
 
+def execute_wayland_commands():
+    commands = [
+        "export WAYLAND_DISPLAY=mysocket",
+        "weston --socket=$WAYLAND_DISPLAY --backend=x11-backend.so"
+    ]
+
+    for command in commands:
+        try:
+            result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+            print(f"コマンドの実行success: {command}")
+            print(f"出力:{result.stdout}")
+        except subprocess.CalledProcessError as e:
+            print(f"コマンドの実行失敗: {e}")
+            return False
+    return True
+
+
 def handle_touch_event(data):
     if 'x' not in data or 'y' not in data:
         print("Invalid touch event data")
@@ -80,6 +97,8 @@ async def got_message_from_server(message):
             handle_touch_event(signal)
         elif signal['type'] == "swipe":
             handle_swipe_event(signal)
+        elif signal['type'] == "screen_size":
+            execute_wayland_commands()
         else:
             print("Unknown type")
     else:
