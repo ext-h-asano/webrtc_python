@@ -29,11 +29,13 @@ def execute_wayland_commands(data):
     width = data['width']
     height = data['height']
     commands = [
+        "./launch-waydroid.sh",
         "adb disconnect",
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
         "waydroid session stop",
-        "./launch-waydroid.sh"
+        "./launch-waydroid.sh",
+        "./test.sh"
     ]
 
     for command in commands:
