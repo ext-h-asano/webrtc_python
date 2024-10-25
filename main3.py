@@ -25,11 +25,15 @@ def execute_adb_command(command):
     except subprocess.CalledProcessError as e:
         print(f"Error executing ADB command: {e}")
 
-def execute_wayland_commands():
+def execute_wayland_commands(data):
+    width = data['width']
+    height = data['height']
     commands = [
-        "weston",
-        "weston-terminal",
-        "waydroid show-full-ui"
+        "adb disconnect",
+        "adb connect 192.168.240.112:5555",
+        f"adb shell wm size {width}x{height}",
+        "waydroid session stop",
+        "./launch_waydroid.sh"
     ]
 
     for command in commands:
@@ -101,7 +105,7 @@ async def got_message_from_server(message):
         elif signal['type'] == "swipe":
             handle_swipe_event(signal)
         elif signal['type'] == "screen_size":
-            execute_wayland_commands()
+            execute_wayland_commands(signal)
         else:
             print("Unknown type")
     else:
