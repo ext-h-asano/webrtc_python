@@ -27,8 +27,9 @@ def execute_adb_command(command):
 
 def execute_wayland_commands():
     commands = [
-        "export WAYLAND_DISPLAY=mysocket",
-        "weston --socket=$WAYLAND_DISPLAY --backend=x11-backend.so"
+        "weston",
+        "weston-terminal",
+        "waydroid show-full-ui"
     ]
 
     for command in commands:
