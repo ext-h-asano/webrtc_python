@@ -39,7 +39,13 @@ def execute_waydroid_commands(data):
         "adb disconnect",
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
-        "waydroid session stop",
+        "waydroid session stop &",
+        "waydroid show-full-ui &",
+        "adb disconnect",
+        "adb connect 192.168.240.112:5555",
+        "sudo modprobe -r v4l2loopback",
+        "sudo modprobe v4l2loopback exclusive_caps=1",
+        "scrcpy --v4l2-sink=/dev/video0 &",
     ]
 
     for command in commands:
@@ -47,7 +53,7 @@ def execute_waydroid_commands(data):
             result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
             print(f"コマンドの実行success: {command}")
             print(f"出力:{result.stdout}")
-            time.sleep(1)
+            time.sleep(2)
         except subprocess.CalledProcessError as e:
             print(f"コマンドの実行失敗: {e}")
             return False
