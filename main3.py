@@ -36,10 +36,13 @@ def execute_waydroid_commands(data):
     width = data['width']
     height = data['height']
     commands = [
+        "weston --backend=x11-backend.so &",
+        "waydroid session stop",
+        "waydroid show-full-ui &",
         "adb disconnect",
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
-        "waydroid session stop &",
+        "waydroid session stop",
         "waydroid show-full-ui &",
         "adb disconnect",
         "adb connect 192.168.240.112:5555",
