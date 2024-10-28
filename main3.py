@@ -25,7 +25,14 @@ def execute_adb_command(command):
     except subprocess.CalledProcessError as e:
         print(f"Error executing ADB command: {e}")
 
-def execute_wayland_commands(data):
+def execute_init_commands(data):
+    subprocess.run("./launch-waydroid.sh")
+
+def execute_restart_commands(data):
+    subprocess.run("./scrcpy-waydroid.sh")
+
+
+def execute_waydroid_commands(data):
     width = data['width']
     height = data['height']
     commands = [
@@ -33,8 +40,6 @@ def execute_wayland_commands(data):
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
         "waydroid session stop",
-        "./launch-waydroid.sh",
-        "./test.sh"
     ]
 
     for command in commands:
@@ -42,7 +47,7 @@ def execute_wayland_commands(data):
             result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
             print(f"コマンドの実行success: {command}")
             print(f"出力:{result.stdout}")
-            time.sleep(5)
+            time.sleep(1)
         except subprocess.CalledProcessError as e:
             print(f"コマンドの実行失敗: {e}")
             return False
@@ -106,7 +111,11 @@ async def got_message_from_server(message):
         elif signal['type'] == "swipe":
             handle_swipe_event(signal)
         elif signal['type'] == "screen_size":
-            execute_wayland_commands(signal)
+            execute_waydroid_commands(signal)
+        elif signal['type'] == "init":
+            execute_init_commands(signal)
+        elif signal['type'] == "restart":
+            execute_restart_commands
         else:
             print("Unknown type")
     else:
