@@ -26,29 +26,23 @@ def execute_adb_command(command):
         print(f"Error executing ADB command: {e}")
 
 def execute_init_commands(data):
-    subprocess.run("./launch-waydroid.sh")
+    subprocess.run("./launch-script/launch-waydroid.sh")
 
 def execute_restart_commands(data):
-    subprocess.run("./scrcpy-waydroid.sh")
+    subprocess.run("./launch-script/scrcpy-waydroid.sh")
 
+def execute_start_browser(data):
+    width = data['width']
+    height = data['height']
+    subprocess.Popen(["python3", "./launch-script/test.py", str(width), str(height)])
 
 def execute_waydroid_commands(data):
     width = data['width']
     height = data['height']
     commands = [
-        "weston --backend=x11-backend.so &",
-        "waydroid session stop",
-        "waydroid show-full-ui &",
         "adb disconnect",
         "adb connect 192.168.240.112:5555",
         f"adb shell wm size {width}x{height}",
-        "waydroid session stop",
-        "waydroid show-full-ui &",
-        "adb disconnect",
-        "adb connect 192.168.240.112:5555",
-        "sudo modprobe -r v4l2loopback",
-        "sudo modprobe v4l2loopback exclusive_caps=1",
-        "scrcpy --v4l2-sink=/dev/video0 &",
     ]
 
     for command in commands:
@@ -124,7 +118,9 @@ async def got_message_from_server(message):
         elif signal['type'] == "init":
             execute_init_commands(signal)
         elif signal['type'] == "restart":
-            execute_restart_commands
+            execute_restart_commands(signal)
+        elif signal['type'] == "start_browser":
+            execute_start_browser(signal)
         else:
             print("Unknown type")
     else:
@@ -136,4 +132,3 @@ async def main():
     await start_server_connection()
 
 asyncio.run(main())
-
