@@ -11,6 +11,7 @@ run_command_with_retry() {
     local status=$?
     if [[ $status -eq 0 ]]; then
       echo "コマンド成功: $command"
+      sleep 1
       break
     else
       echo "コマンド失敗: $command (ステータス: $status)"
