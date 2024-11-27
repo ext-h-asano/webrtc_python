@@ -7,13 +7,14 @@ run_command_with_retry() {
   local command="$@"
   local retry_count=0
   while true; do
-    $command
+    output=$($command 2>&1)
     local status=$?
-    if [[ $status -eq 0 ]]; then
+    if [[ $status -eq 0 && ! $output =~ "No route to host" ]]; then
       echo "コマンド成功: $command"
       break
     else
       echo "コマンド失敗: $command (ステータス: $status)"
+      echo "出力: $output"
       retry_count=$((retry_count + 1))
       if [[ $retry_count -ge $MAX_RETRIES ]]; then
         echo "コマンド失敗、最大試行回数を超えました: $command"
