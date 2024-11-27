@@ -37,4 +37,4 @@ run_command_with_retry sudo modprobe v4l2loopback exclusive_caps=1
 run_command_with_retry adb disconnect
 run_command_with_retry adb connect 192.168.240.112:5555
 scrcpy --v4l2-sink=/dev/video0 &
-python3 /home/ubuntu/selenium/test.py
+python3 ./launch-script/test.py
