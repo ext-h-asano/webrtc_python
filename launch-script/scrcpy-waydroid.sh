@@ -61,5 +61,5 @@ run_command_with_retry sudo modprobe -r v4l2loopback
 run_command_with_retry sudo modprobe v4l2loopback exclusive_caps=1
 run_command_with_retry adb disconnect
 run_command_with_retry adb connect 192.168.240.112:5555
-run_scrcpy_with_retry
+run_scrcpy_with_retry &
 python3 ./launch-script/test.py
