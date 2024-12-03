@@ -45,6 +45,8 @@ run_scrcpy_with_retry() {
         return 1
       else
         echo "adb connectを再試行します ($retry_count/$MAX_RETRIES)..."
+        run_command_with_retry adb kill-server
+        run_command_with_retry adb start-server
         run_command_with_retry adb connect 192.168.240.112:5555
         sleep 1 # 1秒待機
       fi
@@ -62,4 +64,3 @@ run_command_with_retry sudo modprobe v4l2loopback exclusive_caps=1
 run_command_with_retry adb disconnect
 run_command_with_retry adb connect 192.168.240.112:5555
 run_scrcpy_with_retry &
-python3 ./launch-script/test.py
